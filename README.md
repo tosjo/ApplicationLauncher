@@ -20,7 +20,7 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 ## Running
 
 ```bash
-gradlew.bat run
+.\gradlew.bat run
 ```
 
 ## Configuration
