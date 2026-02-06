@@ -55,7 +55,6 @@ Applications are defined in `apps.json` at the project root. Edit this file to a
 
 - **Adaptive grid layout** — responsive card grid that adjusts to window size
 - **Live status indicators** — animated dots show stopped, starting, running, or error state
-- **Start All / Stop All** — batch controls in the top bar
 - **Auto-start** — set `"autoStart": true` in config to launch apps when the launcher opens
 - **Log viewer** — expandable per-card terminal showing recent process output
 - **Port links** — clickable port badges that open `http://localhost:<port>` in the browser when the app is running

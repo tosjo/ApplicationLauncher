@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Start All / Stop All buttons in the top bar for batch operations
 - Log viewer — expandable per-card terminal panel showing recent process output (last 50 lines)
 - Auto-start support — `"autoStart": true` in config launches apps on launcher startup
 - Port display — clickable port badges open `http://localhost:<port>` in browser when app is running
