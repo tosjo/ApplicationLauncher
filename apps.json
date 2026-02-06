@@ -26,7 +26,7 @@
       "name": "ChipWriter (Codex)",
       "description": "NFC chip writer with Compose Desktop UI — built with Codex",
       "path": "D:\\Users\\Toby\\Documents\\Codex\\ChipWriter",
-      "command": "gradlew.bat :ui:run",
+      "command": "gradlew.bat :host:ui:run",
       "color": "#2D3748",
       "group": "Smart Card",
       "tags": ["kotlin", "compose", "nfc"]
