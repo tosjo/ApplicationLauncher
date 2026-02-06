@@ -28,6 +28,9 @@ class ProcessManager {
         scope.launch {
             try {
                 val command = buildCommand(config.command)
+                System.err.println("[${config.id}] Starting: $command")
+                System.err.println("[${config.id}] Working dir: ${config.path}")
+
                 val processBuilder = ProcessBuilder(command)
                     .directory(File(config.path))
                     .redirectErrorStream(true)
@@ -41,7 +44,9 @@ class ProcessManager {
                 // Drain stdout/stderr to prevent buffer blocking
                 outputJobs[config.id] = launch {
                     try {
-                        process.inputStream.bufferedReader().forEachLine { /* discard */ }
+                        process.inputStream.bufferedReader().forEachLine { line ->
+                            System.err.println("[${config.id}] $line")
+                        }
                     } catch (_: Exception) { }
                 }
 
@@ -49,10 +54,12 @@ class ProcessManager {
                 delay(2000)
 
                 if (process.isAlive) {
+                    System.err.println("[${config.id}] Process is alive -> RUNNING")
                     flow.value = AppStatus.RUNNING
                     // Monitor the process in background
                     launch {
-                        process.waitFor()
+                        val exitCode = process.waitFor()
+                        System.err.println("[${config.id}] Process exited with code $exitCode")
                         if (flow.value == AppStatus.RUNNING) {
                             flow.value = AppStatus.STOPPED
                         }
@@ -60,6 +67,7 @@ class ProcessManager {
                     }
                 } else {
                     val exitCode = process.exitValue()
+                    System.err.println("[${config.id}] Process exited early with code $exitCode")
                     if (exitCode != 0) {
                         flow.value = AppStatus.ERROR
                     } else {
@@ -68,6 +76,7 @@ class ProcessManager {
                     processes.remove(config.id)
                 }
             } catch (e: Exception) {
+                System.err.println("[${config.id}] Exception: ${e.message}")
                 flow.value = AppStatus.ERROR
                 processes.remove(config.id)
             }
