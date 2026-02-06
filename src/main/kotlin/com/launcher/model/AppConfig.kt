@@ -13,7 +13,8 @@ data class AppConfig(
     val command: String,
     val color: String = "#1A365D",
     val group: String = "",
-    val tags: List<String> = emptyList()
+    val tags: List<String> = emptyList(),
+    val url: String = ""
 )
 
 @Serializable

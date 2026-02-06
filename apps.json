@@ -9,7 +9,8 @@
       "command": "gradlew.bat :ui:run",
       "color": "#1A365D",
       "group": "Smart Card",
-      "tags": ["kotlin", "compose", "nfc"]
+      "tags": ["kotlin", "compose", "nfc"],
+      "url": "https://github.com/tosjo/ChipReader"
     },
     {
       "id": "chip-writer-claude",
@@ -19,7 +20,8 @@
       "command": "gradlew.bat :ui:run",
       "color": "#2D3748",
       "group": "Smart Card",
-      "tags": ["kotlin", "compose", "nfc"]
+      "tags": ["kotlin", "compose", "nfc"],
+      "url": "https://github.com/tosjo/ChipWriter"
     },
     {
       "id": "chip-writer-codex",
@@ -29,7 +31,8 @@
       "command": "gradlew.bat :host:ui:run",
       "color": "#2D3748",
       "group": "Smart Card",
-      "tags": ["kotlin", "compose", "nfc"]
+      "tags": ["kotlin", "compose", "nfc"],
+      "url": "https://github.com/tosjo/ChipWriter"
     },
     {
       "id": "ml-visualiser",
@@ -39,7 +42,8 @@
       "command": ".venv\\Scripts\\python.exe scripts\\start_fullstack.py",
       "color": "#553C9A",
       "group": "Tools",
-      "tags": ["python", "react", "fastapi"]
+      "tags": ["python", "react", "fastapi"],
+      "url": "https://github.com/tosjo/MLInspector"
     },
     {
       "id": "cvc-reader",
@@ -49,7 +53,8 @@
       "command": "gradlew.bat run",
       "color": "#1A4D2E",
       "group": "Certificate",
-      "tags": ["kotlin", "compose"]
+      "tags": ["kotlin", "compose"],
+      "url": "https://github.com/tosjo/CVCReader"
     },
     {
       "id": "certificate-toolbox",
@@ -59,7 +64,8 @@
       "command": "venv\\Scripts\\python.exe -m certtoolbox",
       "color": "#744210",
       "group": "Certificate",
-      "tags": ["python", "pyside6"]
+      "tags": ["python", "pyside6"],
+      "url": "https://github.com/tosjo/CertificateToolbox"
     }
   ]
 }

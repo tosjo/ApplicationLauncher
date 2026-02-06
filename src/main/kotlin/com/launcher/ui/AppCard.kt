@@ -6,6 +6,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -19,6 +22,9 @@ import androidx.compose.ui.unit.sp
 import com.launcher.model.AppConfig
 import com.launcher.model.AppStatus
 import com.launcher.ui.theme.*
+import java.awt.Desktop
+import java.io.File
+import java.net.URI
 
 @Composable
 fun AppCard(
@@ -49,7 +55,7 @@ fun AppCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // Header row: status dot + name
+            // Header row: status dot + name + action icons
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
@@ -64,6 +70,30 @@ fun AppCard(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
+                if (config.url.isNotBlank()) {
+                    IconButton(
+                        onClick = { Desktop.getDesktop().browse(URI(config.url)) },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Link,
+                            contentDescription = "Open GitHub",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+                IconButton(
+                    onClick = { Desktop.getDesktop().open(File(config.path)) },
+                    modifier = Modifier.size(28.dp)
+                ) {
+                    Icon(
+                        Icons.Default.FolderOpen,
+                        contentDescription = "Open folder",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             }
 
             // Description
