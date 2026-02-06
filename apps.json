@@ -43,7 +43,11 @@
       "color": "#553C9A",
       "group": "Tools",
       "tags": ["python", "react", "fastapi"],
-      "url": "https://github.com/tosjo/MLInspector"
+      "url": "https://github.com/tosjo/MLInspector",
+      "ports": [
+        {"port": 8000, "label": "API"},
+        {"port": 5173, "label": "Frontend"}
+      ]
     },
     {
       "id": "cvc-reader",

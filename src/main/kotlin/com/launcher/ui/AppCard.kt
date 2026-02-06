@@ -1,20 +1,23 @@
 package com.launcher.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -30,10 +33,13 @@ import java.net.URI
 fun AppCard(
     config: AppConfig,
     status: AppStatus,
+    logLines: List<String>,
     onStart: () -> Unit,
     onStop: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var showLog by remember { mutableStateOf(false) }
+
     val statusColor by animateColorAsState(
         targetValue = when (status) {
             AppStatus.STOPPED -> StatusStopped
@@ -94,6 +100,20 @@ fun AppCard(
                         modifier = Modifier.size(18.dp)
                     )
                 }
+                if (logLines.isNotEmpty()) {
+                    IconButton(
+                        onClick = { showLog = !showLog },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Terminal,
+                            contentDescription = "Toggle log",
+                            tint = if (showLog) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
             }
 
             // Description
@@ -108,15 +128,17 @@ fun AppCard(
                 )
             }
 
-            // Tags
-            if (config.tags.isNotEmpty()) {
+            // Tags + Ports row
+            if (config.tags.isNotEmpty() || config.ports.isNotEmpty()) {
                 Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     config.tags.forEach { tag ->
                         Surface(
                             shape = RoundedCornerShape(4.dp),
                             color = accentColor.copy(alpha = 0.2f),
-                            modifier = Modifier
                         ) {
                             Text(
                                 text = tag,
@@ -125,6 +147,63 @@ fun AppCard(
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                             )
                         }
+                    }
+                    config.ports.forEach { portConfig ->
+                        val label = if (portConfig.label.isNotBlank()) {
+                            "${portConfig.label} :${portConfig.port}"
+                        } else {
+                            ":${portConfig.port}"
+                        }
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = if (status == AppStatus.RUNNING) {
+                                StatusRunning.copy(alpha = 0.15f)
+                            } else {
+                                MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                            },
+                            modifier = Modifier.clickable(enabled = status == AppStatus.RUNNING) {
+                                Desktop.getDesktop().browse(URI("http://localhost:${portConfig.port}"))
+                            }
+                        ) {
+                            Text(
+                                text = label,
+                                fontSize = 11.sp,
+                                color = if (status == AppStatus.RUNNING) {
+                                    StatusRunning
+                                } else {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                },
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Log viewer
+            AnimatedVisibility(visible = showLog && logLines.isNotEmpty()) {
+                Column {
+                    Spacer(Modifier.height(10.dp))
+                    val scrollState = rememberScrollState()
+                    // Auto-scroll to bottom when new lines arrive
+                    LaunchedEffect(logLines.size) {
+                        scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                    Surface(
+                        shape = RoundedCornerShape(6.dp),
+                        color = Color(0xFF0D0D1A),
+                        modifier = Modifier.fillMaxWidth().heightIn(max = 160.dp)
+                    ) {
+                        Text(
+                            text = logLines.takeLast(50).joinToString("\n"),
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 10.sp,
+                            color = Color(0xFFA0AEC0),
+                            lineHeight = 14.sp,
+                            modifier = Modifier
+                                .padding(8.dp)
+                                .verticalScroll(scrollState)
+                        )
                     }
                 }
             }

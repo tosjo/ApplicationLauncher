@@ -4,14 +4,14 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 
 ## Managed Applications
 
-| Application | Type | Command |
-|---|---|---|
-| ChipReader | Kotlin/Compose | `gradlew.bat :ui:run` |
-| ChipWriter (Claude Code) | Kotlin/Compose | `gradlew.bat :ui:run` |
-| ChipWriter (Codex) | Kotlin/Compose | `gradlew.bat :ui:run` |
-| MLVisualiser | FastAPI + React | `python scripts/start_fullstack.py` |
-| CVCReader | Kotlin/Compose | `gradlew.bat run` |
-| CertificateToolbox | Python/PySide6 | `python -m certtoolbox` (via venv) |
+| Application | Type | Command | GitHub |
+|---|---|---|---|
+| ChipReader | Kotlin/Compose | `gradlew.bat :ui:run` | [tosjo/ChipReader](https://github.com/tosjo/ChipReader) |
+| ChipWriter (Claude Code) | Kotlin/Compose | `gradlew.bat :ui:run` | [tosjo/ChipWriter](https://github.com/tosjo/ChipWriter) |
+| ChipWriter (Codex) | Kotlin/Compose | `gradlew.bat :host:ui:run` | [tosjo/ChipWriter](https://github.com/tosjo/ChipWriter) |
+| MLVisualiser | FastAPI + React | `.venv\Scripts\python.exe scripts\start_fullstack.py` | [tosjo/MLInspector](https://github.com/tosjo/MLInspector) |
+| CVCReader | Kotlin/Compose | `gradlew.bat run` | [tosjo/CVCReader](https://github.com/tosjo/CVCReader) |
+| CertificateToolbox | Python/PySide6 | `venv\Scripts\python.exe -m certtoolbox` | [tosjo/CertificateToolbox](https://github.com/tosjo/CertificateToolbox) |
 
 ## Requirements
 
@@ -40,7 +40,12 @@ Applications are defined in `apps.json` at the project root. Edit this file to a
       "command": "gradlew.bat run",
       "color": "#1A365D",
       "group": "Optional Group",
-      "tags": ["kotlin", "compose"]
+      "tags": ["kotlin", "compose"],
+      "url": "https://github.com/user/repo",
+      "autoStart": false,
+      "ports": [
+        {"port": 8000, "label": "API"}
+      ]
     }
   ]
 }
@@ -50,6 +55,12 @@ Applications are defined in `apps.json` at the project root. Edit this file to a
 
 - **Adaptive grid layout** — responsive card grid that adjusts to window size
 - **Live status indicators** — animated dots show stopped, starting, running, or error state
+- **Start All / Stop All** — batch controls in the top bar
+- **Auto-start** — set `"autoStart": true` in config to launch apps when the launcher opens
+- **Log viewer** — expandable per-card terminal showing recent process output
+- **Port links** — clickable port badges that open `http://localhost:<port>` in the browser when the app is running
+- **GitHub links** — link icon opens the repository in the browser
+- **Open folder** — folder icon opens the project directory in file explorer
 - **Process tree management** — stops entire process trees, not just parent processes
 - **Hot reload** — re-read `apps.json` without restarting the launcher
 - **Graceful shutdown** — all child processes are cleaned up when the launcher exits

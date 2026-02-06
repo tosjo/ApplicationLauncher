@@ -5,6 +5,12 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 @Serializable
+data class PortConfig(
+    val port: Int,
+    val label: String = ""
+)
+
+@Serializable
 data class AppConfig(
     val id: String,
     val name: String,
@@ -14,7 +20,9 @@ data class AppConfig(
     val color: String = "#1A365D",
     val group: String = "",
     val tags: List<String> = emptyList(),
-    val url: String = ""
+    val url: String = "",
+    val autoStart: Boolean = false,
+    val ports: List<PortConfig> = emptyList()
 )
 
 @Serializable

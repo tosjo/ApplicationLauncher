@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 class ProcessManager {
 
@@ -14,9 +15,28 @@ class ProcessManager {
     private val statusFlows = mutableMapOf<String, MutableStateFlow<AppStatus>>()
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val outputJobs = mutableMapOf<String, Job>()
+    private val logBuffers = ConcurrentHashMap<String, MutableStateFlow<List<String>>>()
+
+    companion object {
+        private const val MAX_LOG_LINES = 200
+    }
 
     fun statusFlow(appId: String): StateFlow<AppStatus> {
         return statusFlows.getOrPut(appId) { MutableStateFlow(AppStatus.STOPPED) }.asStateFlow()
+    }
+
+    fun logFlow(appId: String): StateFlow<List<String>> {
+        return logBuffers.getOrPut(appId) { MutableStateFlow(emptyList()) }.asStateFlow()
+    }
+
+    private fun appendLog(appId: String, line: String) {
+        val flow = logBuffers.getOrPut(appId) { MutableStateFlow(emptyList()) }
+        val current = flow.value
+        flow.value = if (current.size >= MAX_LOG_LINES) {
+            current.drop(1) + line
+        } else {
+            current + line
+        }
     }
 
     fun start(config: AppConfig) {
@@ -24,6 +44,9 @@ class ProcessManager {
 
         val flow = statusFlows.getOrPut(config.id) { MutableStateFlow(AppStatus.STOPPED) }
         flow.value = AppStatus.STARTING
+
+        // Clear previous log
+        logBuffers.getOrPut(config.id) { MutableStateFlow(emptyList()) }.value = emptyList()
 
         scope.launch {
             try {
@@ -41,11 +64,12 @@ class ProcessManager {
                 val process = processBuilder.start()
                 processes[config.id] = process
 
-                // Drain stdout/stderr to prevent buffer blocking
+                // Drain stdout/stderr and capture to log buffer
                 outputJobs[config.id] = launch {
                     try {
                         process.inputStream.bufferedReader().forEachLine { line ->
                             System.err.println("[${config.id}] $line")
+                            appendLog(config.id, line)
                         }
                     } catch (_: Exception) { }
                 }
@@ -77,10 +101,15 @@ class ProcessManager {
                 }
             } catch (e: Exception) {
                 System.err.println("[${config.id}] Exception: ${e.message}")
+                appendLog(config.id, "ERROR: ${e.message}")
                 flow.value = AppStatus.ERROR
                 processes.remove(config.id)
             }
         }
+    }
+
+    fun startAll(configs: List<AppConfig>) {
+        configs.forEach { start(it) }
     }
 
     fun stop(appId: String) {
