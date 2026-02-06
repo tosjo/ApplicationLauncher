@@ -128,6 +128,28 @@ class ProcessManager {
         }
     }
 
+    fun restart(config: AppConfig) {
+        val process = processes[config.id]
+        val flow = statusFlows.getOrPut(config.id) { MutableStateFlow(AppStatus.STOPPED) }
+
+        scope.launch {
+            // Stop if running
+            if (process?.isAlive == true) {
+                try {
+                    process.descendants().forEach { it.destroyForcibly() }
+                    process.destroyForcibly()
+                    process.waitFor()
+                } catch (_: Exception) { }
+                processes.remove(config.id)
+                outputJobs.remove(config.id)?.cancel()
+            }
+            flow.value = AppStatus.STOPPED
+            delay(500)
+            // Start again
+            start(config)
+        }
+    }
+
     fun stopAll() {
         processes.keys.toList().forEach { stop(it) }
     }

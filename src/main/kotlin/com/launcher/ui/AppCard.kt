@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -36,6 +37,7 @@ fun AppCard(
     logLines: List<String>,
     onStart: () -> Unit,
     onStop: () -> Unit,
+    onRestart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showLog by remember { mutableStateOf(false) }
@@ -210,29 +212,43 @@ fun AppCard(
 
             Spacer(Modifier.height(14.dp))
 
-            // Action button
+            // Action buttons
             val isRunning = status == AppStatus.RUNNING || status == AppStatus.STARTING
 
-            Button(
-                onClick = { if (isRunning) onStop() else onStart() },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (isRunning) {
-                        MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
-                    } else {
-                        MaterialTheme.colorScheme.primary
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(
+                    onClick = { if (isRunning) onStop() else onStart() },
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (isRunning) {
+                            MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        }
+                    )
+                ) {
+                    Text(
+                        text = when (status) {
+                            AppStatus.STOPPED -> "Start"
+                            AppStatus.STARTING -> "Starting..."
+                            AppStatus.RUNNING -> "Stop"
+                            AppStatus.ERROR -> "Retry"
+                        }
+                    )
+                }
+                if (isRunning) {
+                    IconButton(
+                        onClick = onRestart,
+                        modifier = Modifier.size(40.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.RestartAlt,
+                            contentDescription = "Restart",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
-                )
-            ) {
-                Text(
-                    text = when (status) {
-                        AppStatus.STOPPED -> "Start"
-                        AppStatus.STARTING -> "Starting..."
-                        AppStatus.RUNNING -> "Stop"
-                        AppStatus.ERROR -> "Retry"
-                    }
-                )
+                }
             }
         }
     }

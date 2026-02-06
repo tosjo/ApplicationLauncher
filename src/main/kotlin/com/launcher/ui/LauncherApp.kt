@@ -1,9 +1,8 @@
 package com.launcher.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
@@ -18,7 +17,7 @@ import com.launcher.process.ProcessManager
 import com.launcher.ui.theme.LauncherTheme
 import java.io.File
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun LauncherApp(processManager: ProcessManager, configFile: File) {
     var apps by remember { mutableStateOf(loadAppConfigs(configFile)) }
@@ -90,33 +89,47 @@ fun LauncherApp(processManager: ProcessManager, configFile: File) {
                         )
                     }
                 } else {
-                    AppGrid(apps, processManager)
+                    GroupedAppList(apps, processManager)
                 }
             }
         }
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun AppGrid(apps: List<AppConfig>, processManager: ProcessManager) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 300.dp),
+private fun GroupedAppList(apps: List<AppConfig>, processManager: ProcessManager) {
+    // Group apps, preserving order of first appearance
+    val groups = apps.groupBy { it.group.ifBlank { "Other" } }
+
+    LazyColumn(
         contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxSize()
     ) {
-        items(apps, key = { it.id }) { config ->
-            val status by processManager.statusFlow(config.id).collectAsState()
-            val logLines by processManager.logFlow(config.id).collectAsState()
+        groups.forEach { (groupName, groupApps) ->
+            item(key = "header-$groupName") {
+                Text(
+                    text = groupName,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(bottom = 4.dp, top = 8.dp)
+                )
+            }
+            items(groupApps, key = { it.id }) { config ->
+                val status by processManager.statusFlow(config.id).collectAsState()
+                val logLines by processManager.logFlow(config.id).collectAsState()
 
-            AppCard(
-                config = config,
-                status = status,
-                logLines = logLines,
-                onStart = { processManager.start(config) },
-                onStop = { processManager.stop(config.id) }
-            )
+                AppCard(
+                    config = config,
+                    status = status,
+                    logLines = logLines,
+                    onStart = { processManager.start(config) },
+                    onStop = { processManager.stop(config.id) },
+                    onRestart = { processManager.restart(config) }
+                )
+            }
         }
     }
 }
