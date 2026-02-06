@@ -1,0 +1,177 @@
+package com.launcher.ui
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.launcher.model.AppConfig
+import com.launcher.model.AppStatus
+import com.launcher.ui.theme.*
+
+@Composable
+fun AppCard(
+    config: AppConfig,
+    status: AppStatus,
+    onStart: () -> Unit,
+    onStop: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val statusColor by animateColorAsState(
+        targetValue = when (status) {
+            AppStatus.STOPPED -> StatusStopped
+            AppStatus.STARTING -> StatusStarting
+            AppStatus.RUNNING -> StatusRunning
+            AppStatus.ERROR -> StatusError
+        },
+        animationSpec = tween(500)
+    )
+
+    val accentColor = parseHexColor(config.color) ?: MaterialTheme.colorScheme.primaryContainer
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            // Header row: status dot + name
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                StatusDot(status, statusColor)
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    text = config.name,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            // Description
+            if (config.description.isNotBlank()) {
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = config.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            // Tags
+            if (config.tags.isNotEmpty()) {
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    config.tags.forEach { tag ->
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = accentColor.copy(alpha = 0.2f),
+                            modifier = Modifier
+                        ) {
+                            Text(
+                                text = tag,
+                                fontSize = 11.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            // Action button
+            val isRunning = status == AppStatus.RUNNING || status == AppStatus.STARTING
+
+            Button(
+                onClick = { if (isRunning) onStop() else onStart() },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (isRunning) {
+                        MaterialTheme.colorScheme.error.copy(alpha = 0.8f)
+                    } else {
+                        MaterialTheme.colorScheme.primary
+                    }
+                )
+            ) {
+                Text(
+                    text = when (status) {
+                        AppStatus.STOPPED -> "Start"
+                        AppStatus.STARTING -> "Starting..."
+                        AppStatus.RUNNING -> "Stop"
+                        AppStatus.ERROR -> "Retry"
+                    }
+                )
+            }
+        }
+    }
+}
+
+private fun parseHexColor(hex: String): Color? {
+    val cleaned = hex.removePrefix("#")
+    return try {
+        val value = cleaned.toLong(16)
+        when (cleaned.length) {
+            6 -> Color(
+                red = ((value shr 16) and 0xFF) / 255f,
+                green = ((value shr 8) and 0xFF) / 255f,
+                blue = (value and 0xFF) / 255f
+            )
+            8 -> Color(
+                alpha = ((value shr 24) and 0xFF) / 255f,
+                red = ((value shr 16) and 0xFF) / 255f,
+                green = ((value shr 8) and 0xFF) / 255f,
+                blue = (value and 0xFF) / 255f
+            )
+            else -> null
+        }
+    } catch (_: Exception) {
+        null
+    }
+}
+
+@Composable
+private fun StatusDot(status: AppStatus, color: Color) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val alpha by if (status == AppStatus.STARTING) {
+        infiniteTransition.animateFloat(
+            initialValue = 0.3f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(800, easing = EaseInOut),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+    } else {
+        mutableStateOf(1f)
+    }
+
+    Box(
+        modifier = Modifier
+            .size(12.dp)
+            .clip(CircleShape)
+            .background(color.copy(alpha = alpha))
+    )
+}

@@ -1,0 +1,65 @@
+{
+  "version": "1.0",
+  "apps": [
+    {
+      "id": "chip-reader",
+      "name": "ChipReader",
+      "description": "NFC chip reader with Compose Desktop UI",
+      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\ChipReader",
+      "command": "gradlew.bat :ui:run",
+      "color": "#1A365D",
+      "group": "Smart Card",
+      "tags": ["kotlin", "compose", "nfc"]
+    },
+    {
+      "id": "chip-writer-1",
+      "name": "ChipWriter (Instance 1)",
+      "description": "NFC chip writer with Compose Desktop UI",
+      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\ChipWriter",
+      "command": "gradlew.bat :ui:run",
+      "color": "#2D3748",
+      "group": "Smart Card",
+      "tags": ["kotlin", "compose", "nfc"]
+    },
+    {
+      "id": "chip-writer-2",
+      "name": "ChipWriter (Instance 2)",
+      "description": "Second instance of NFC chip writer",
+      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\ChipWriter",
+      "command": "gradlew.bat :ui:run",
+      "color": "#2D3748",
+      "group": "Smart Card",
+      "tags": ["kotlin", "compose", "nfc"]
+    },
+    {
+      "id": "ml-visualiser",
+      "name": "MLVisualiser",
+      "description": "Machine learning visualiser — FastAPI backend + React frontend",
+      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\MLVisualiser",
+      "command": "python scripts/start_fullstack.py",
+      "color": "#553C9A",
+      "group": "Tools",
+      "tags": ["python", "react", "fastapi"]
+    },
+    {
+      "id": "cvc-reader",
+      "name": "CVCReader",
+      "description": "Card Verifiable Certificate reader with Compose Desktop UI",
+      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\CVCReader",
+      "command": "gradlew.bat run",
+      "color": "#1A4D2E",
+      "group": "Certificate",
+      "tags": ["kotlin", "compose"]
+    },
+    {
+      "id": "certificate-toolbox",
+      "name": "CertificateToolbox",
+      "description": "Certificate management toolbox — PySide6 GUI",
+      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\CertificateToolbox",
+      "command": "cmd /c \"venv\\Scripts\\activate && python -m certtoolbox\"",
+      "color": "#744210",
+      "group": "Certificate",
+      "tags": ["python", "pyside6"]
+    }
+  ]
+}
