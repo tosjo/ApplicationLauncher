@@ -12,9 +12,9 @@
       "tags": ["kotlin", "compose", "nfc"]
     },
     {
-      "id": "chip-writer-1",
-      "name": "ChipWriter (Instance 1)",
-      "description": "NFC chip writer with Compose Desktop UI",
+      "id": "chip-writer-claude",
+      "name": "ChipWriter (Claude Code)",
+      "description": "NFC chip writer with Compose Desktop UI — built with Claude Code",
       "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\ChipWriter",
       "command": "gradlew.bat :ui:run",
       "color": "#2D3748",
@@ -22,10 +22,10 @@
       "tags": ["kotlin", "compose", "nfc"]
     },
     {
-      "id": "chip-writer-2",
-      "name": "ChipWriter (Instance 2)",
-      "description": "Second instance of NFC chip writer",
-      "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\ChipWriter",
+      "id": "chip-writer-codex",
+      "name": "ChipWriter (Codex)",
+      "description": "NFC chip writer with Compose Desktop UI — built with Codex",
+      "path": "D:\\Users\\Toby\\Documents\\Codex\\ChipWriter",
       "command": "gradlew.bat :ui:run",
       "color": "#2D3748",
       "group": "Smart Card",

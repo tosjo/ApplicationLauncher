@@ -7,7 +7,8 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 | Application | Type | Command |
 |---|---|---|
 | ChipReader | Kotlin/Compose | `gradlew.bat :ui:run` |
-| ChipWriter (x2) | Kotlin/Compose | `gradlew.bat :ui:run` |
+| ChipWriter (Claude Code) | Kotlin/Compose | `gradlew.bat :ui:run` |
+| ChipWriter (Codex) | Kotlin/Compose | `gradlew.bat :ui:run` |
 | MLVisualiser | FastAPI + React | `python scripts/start_fullstack.py` |
 | CVCReader | Kotlin/Compose | `gradlew.bat run` |
 | CertificateToolbox | Python/PySide6 | `python -m certtoolbox` (via venv) |
