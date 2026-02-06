@@ -11,7 +11,6 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 | ChipWriter (Codex) | Kotlin/Compose | `gradlew.bat :host:ui:run` | [tosjo/ChipWriter](https://github.com/tosjo/ChipWriter) |
 | MLVisualiser | FastAPI + React | `.venv\Scripts\python.exe scripts\start_fullstack.py` | [tosjo/MLInspector](https://github.com/tosjo/MLInspector) |
 | CVCReader | Kotlin/Compose | `gradlew.bat run` | [tosjo/CVCReader](https://github.com/tosjo/CVCReader) |
-| CertificateToolbox | Python/PySide6 | `venv\Scripts\python.exe -m certtoolbox` | [tosjo/CertificateToolbox](https://github.com/tosjo/CertificateToolbox) |
 
 ## Requirements
 
@@ -56,6 +55,7 @@ Applications are defined in `apps.json` at the project root. Edit this file to a
 - **Adaptive grid layout** — responsive card grid that adjusts to window size
 - **Live status indicators** — animated dots show stopped, starting, running, or error state
 - **Auto-start** — set `"autoStart": true` in config to launch apps when the launcher opens
+- **Quick restart** — restart a running app with a single click
 - **Log viewer** — expandable per-card terminal showing recent process output
 - **Port links** — clickable port badges that open `http://localhost:<port>` in the browser when the app is running
 - **GitHub links** — link icon opens the repository in the browser

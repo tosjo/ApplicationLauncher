@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Quick restart button — restart a running app with a single click
 - Log viewer — expandable per-card terminal panel showing recent process output (last 50 lines)
 - Auto-start support — `"autoStart": true` in config launches apps on launcher startup
 - Port display — clickable port badges open `http://localhost:<port>` in browser when app is running
@@ -31,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release
 - Compose Desktop launcher with dark Material3 theme
 - JSON-configurable app definitions (`apps.json`)
-- Pre-configured entries for ChipReader, ChipWriter (x2), MLVisualiser, CVCReader, and CertificateToolbox
+- Pre-configured entries for ChipReader, ChipWriter (x2), MLVisualiser, and CVCReader
 - ProcessBuilder-based start/stop with process tree cleanup
 - Adaptive grid layout (LazyVerticalGrid, min 300dp columns)
 - Animated status indicators (stopped, starting, running, error)
