@@ -13,6 +13,7 @@ class ProcessManager {
     private val processes = mutableMapOf<String, Process>()
     private val statusFlows = mutableMapOf<String, MutableStateFlow<AppStatus>>()
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val outputJobs = mutableMapOf<String, Job>()
 
     fun statusFlow(appId: String): StateFlow<AppStatus> {
         return statusFlows.getOrPut(appId) { MutableStateFlow(AppStatus.STOPPED) }.asStateFlow()
@@ -31,8 +32,18 @@ class ProcessManager {
                     .directory(File(config.path))
                     .redirectErrorStream(true)
 
+                // Ensure Python subprocesses can handle Unicode output
+                processBuilder.environment()["PYTHONIOENCODING"] = "utf-8"
+
                 val process = processBuilder.start()
                 processes[config.id] = process
+
+                // Drain stdout/stderr to prevent buffer blocking
+                outputJobs[config.id] = launch {
+                    try {
+                        process.inputStream.bufferedReader().forEachLine { /* discard */ }
+                    } catch (_: Exception) { }
+                }
 
                 // Give the process a moment to fail or start
                 delay(2000)
@@ -78,6 +89,7 @@ class ProcessManager {
             } finally {
                 flow.value = AppStatus.STOPPED
                 processes.remove(appId)
+                outputJobs.remove(appId)?.cancel()
             }
         }
     }
