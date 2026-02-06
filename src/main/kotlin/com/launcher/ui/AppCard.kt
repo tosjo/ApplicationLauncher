@@ -62,7 +62,7 @@ fun AppCard(
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.fillMaxHeight().padding(16.dp)) {
             // Header row: status dot + name + action icons
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -210,6 +210,7 @@ fun AppCard(
                 }
             }
 
+            Spacer(Modifier.weight(1f))
             Spacer(Modifier.height(14.dp))
 
             // Action buttons
