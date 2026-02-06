@@ -1,8 +1,10 @@
 package com.launcher.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
@@ -17,7 +19,7 @@ import com.launcher.process.ProcessManager
 import com.launcher.ui.theme.LauncherTheme
 import java.io.File
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LauncherApp(processManager: ProcessManager, configFile: File) {
     var apps by remember { mutableStateOf(loadAppConfigs(configFile)) }
@@ -89,32 +91,33 @@ fun LauncherApp(processManager: ProcessManager, configFile: File) {
                         )
                     }
                 } else {
-                    GroupedAppList(apps, processManager)
+                    GroupedAppGrid(apps, processManager)
                 }
             }
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun GroupedAppList(apps: List<AppConfig>, processManager: ProcessManager) {
-    // Group apps, preserving order of first appearance
+private fun GroupedAppGrid(apps: List<AppConfig>, processManager: ProcessManager) {
     val groups = apps.groupBy { it.group.ifBlank { "Other" } }
 
-    LazyColumn(
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 300.dp),
         contentPadding = PaddingValues(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         groups.forEach { (groupName, groupApps) ->
-            item(key = "header-$groupName") {
+            // Group header spans the full width
+            item(key = "header-$groupName", span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = groupName,
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(bottom = 4.dp, top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp)
                 )
             }
             items(groupApps, key = { it.id }) { config ->
