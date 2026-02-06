@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-02-06
+
+### Added
+
+- Multi-machine support — portable configuration works across different laptops and drives
+- Relative path support — use `..\\AppName` for sibling projects
+- Environment variable substitution — `${VAR_NAME}` and `%VAR_NAME%` in paths
+- Local config overrides — `apps.local.json` for machine-specific paths (git-ignored)
+- Path resolution — automatic conversion of relative paths to absolute paths
+- Comprehensive configuration documentation in `docs/CONFIGURATION.md`
+- Quick start guide in `docs/QUICKSTART.md`
+- Example template `apps.local.example.json` for local overrides
+
+### Changed
+
+- Default app paths now use relative paths (`..\\ChipReader`) instead of absolute paths
+- `AppConfig.kt` enhanced with environment variable and path resolution logic
+
+### Removed
+
+- CertificateToolbox app from default configuration
+
 ## [0.2.0] - 2026-02-06
 
 ### Added

@@ -1,0 +1,19 @@
+{
+  "overrides": {
+    "chip-reader": {
+      "path": "D:\\Users\\YourName\\Documents\\ClaudeMCP\\ChipReader"
+    },
+    "chip-writer-claude": {
+      "path": "D:\\Users\\YourName\\Documents\\ClaudeMCP\\ChipWriter"
+    },
+    "chip-writer-codex": {
+      "path": "D:\\Users\\YourName\\Documents\\Codex\\ChipWriter"
+    },
+    "ml-visualiser": {
+      "path": "D:\\Users\\YourName\\Documents\\ClaudeMCP\\MLVisualiser"
+    },
+    "cvc-reader": {
+      "path": "D:\\Users\\YourName\\Documents\\ClaudeMCP\\CVCReader"
+    }
+  }
+}

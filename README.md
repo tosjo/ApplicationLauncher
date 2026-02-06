@@ -27,6 +27,33 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 
 Applications are defined in `apps.json` at the project root. Edit this file to add, remove, or modify applications — then click the reload button in the launcher to apply changes.
 
+### Multi-Machine Support
+
+**Relative Paths** (recommended for sibling projects):
+```json
+{
+  "path": "..\\MyApp"
+}
+```
+Works on any drive (C:, D:, etc.) as long as directory structure is the same.
+
+**Environment Variables** (for flexible paths):
+```json
+{
+  "path": "${PROJECTS_DIR}\\MyApp"
+}
+```
+
+**Local Overrides** (machine-specific paths):
+```bash
+cp apps.local.example.json apps.local.json
+# Edit apps.local.json with your local paths
+```
+
+See [docs/CONFIGURATION.md](docs/CONFIGURATION.md) for detailed guide.
+
+### App Schema
+
 ```json
 {
   "version": "1.0",
@@ -35,7 +62,7 @@ Applications are defined in `apps.json` at the project root. Edit this file to a
       "id": "unique-id",
       "name": "Display Name",
       "description": "Short description",
-      "path": "D:\\path\\to\\project",
+      "path": "..\\MyApp",
       "command": "gradlew.bat run",
       "color": "#1A365D",
       "group": "Optional Group",

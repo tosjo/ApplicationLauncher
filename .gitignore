@@ -4,3 +4,6 @@ build/
 *.iml
 .kotlin/
 nul
+
+# Machine-specific configuration
+apps.local.json
