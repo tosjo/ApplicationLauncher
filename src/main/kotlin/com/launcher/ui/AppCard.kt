@@ -55,7 +55,7 @@ fun AppCard(
     val accentColor = parseHexColor(config.color) ?: MaterialTheme.colorScheme.primaryContainer
 
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().defaultMinSize(minHeight = 200.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
