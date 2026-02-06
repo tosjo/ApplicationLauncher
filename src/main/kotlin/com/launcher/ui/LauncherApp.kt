@@ -5,9 +5,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,7 +16,6 @@ import com.launcher.model.AppConfig
 import com.launcher.model.loadAppConfigs
 import com.launcher.process.ProcessManager
 import com.launcher.ui.theme.LauncherTheme
-import com.launcher.ui.theme.StatusRunning
 import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,20 +51,6 @@ fun LauncherApp(processManager: ProcessManager, configFile: File) {
                         )
                     },
                     actions = {
-                        IconButton(onClick = { processManager.startAll(apps) }) {
-                            Icon(
-                                Icons.Default.PlayArrow,
-                                contentDescription = "Start all",
-                                tint = StatusRunning
-                            )
-                        }
-                        IconButton(onClick = { processManager.stopAll() }) {
-                            Icon(
-                                Icons.Default.Stop,
-                                contentDescription = "Stop all",
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
                         IconButton(onClick = { reload() }) {
                             Icon(Icons.Default.Refresh, contentDescription = "Reload config")
                         }

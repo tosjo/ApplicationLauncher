@@ -108,10 +108,6 @@ class ProcessManager {
         }
     }
 
-    fun startAll(configs: List<AppConfig>) {
-        configs.forEach { start(it) }
-    }
-
     fun stop(appId: String) {
         val process = processes[appId] ?: return
         val flow = statusFlows[appId] ?: return
