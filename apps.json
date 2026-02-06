@@ -36,7 +36,7 @@
       "name": "MLVisualiser",
       "description": "Machine learning visualiser — FastAPI backend + React frontend",
       "path": "D:\\Users\\Toby\\Documents\\ClaudeMCP\\MLVisualiser",
-      "command": "python scripts/start_fullstack.py",
+      "command": "cmd /c \".venv\\Scripts\\activate && python scripts/start_fullstack.py\"",
       "color": "#553C9A",
       "group": "Tools",
       "tags": ["python", "react", "fastapi"]
