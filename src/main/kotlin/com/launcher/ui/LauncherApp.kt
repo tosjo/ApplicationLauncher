@@ -2,7 +2,6 @@ package com.launcher.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
@@ -91,7 +90,7 @@ fun LauncherApp(processManager: ProcessManager, configFile: File) {
                         )
                     }
                 } else {
-                    GroupedAppGrid(apps, processManager)
+                    AppGrid(apps, processManager)
                 }
             }
         }
@@ -99,9 +98,7 @@ fun LauncherApp(processManager: ProcessManager, configFile: File) {
 }
 
 @Composable
-private fun GroupedAppGrid(apps: List<AppConfig>, processManager: ProcessManager) {
-    val groups = apps.groupBy { it.group.ifBlank { "Other" } }
-
+private fun AppGrid(apps: List<AppConfig>, processManager: ProcessManager) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 300.dp),
         contentPadding = PaddingValues(16.dp),
@@ -109,30 +106,18 @@ private fun GroupedAppGrid(apps: List<AppConfig>, processManager: ProcessManager
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxSize()
     ) {
-        groups.forEach { (groupName, groupApps) ->
-            // Group header spans the full width
-            item(key = "header-$groupName", span = { GridItemSpan(maxLineSpan) }) {
-                Text(
-                    text = groupName,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-            items(groupApps, key = { it.id }) { config ->
-                val status by processManager.statusFlow(config.id).collectAsState()
-                val logLines by processManager.logFlow(config.id).collectAsState()
+        items(apps, key = { it.id }) { config ->
+            val status by processManager.statusFlow(config.id).collectAsState()
+            val logLines by processManager.logFlow(config.id).collectAsState()
 
-                AppCard(
-                    config = config,
-                    status = status,
-                    logLines = logLines,
-                    onStart = { processManager.start(config) },
-                    onStop = { processManager.stop(config.id) },
-                    onRestart = { processManager.restart(config) }
-                )
-            }
+            AppCard(
+                config = config,
+                status = status,
+                logLines = logLines,
+                onStart = { processManager.start(config) },
+                onStop = { processManager.stop(config.id) },
+                onRestart = { processManager.restart(config) }
+            )
         }
     }
 }
