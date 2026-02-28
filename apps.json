@@ -13,9 +13,9 @@
       "url": "https://github.com/tosjo/ChipReader"
     },
     {
-      "id": "chip-writer-claude",
-      "name": "ChipWriter (Claude Code)",
-      "description": "NFC chip writer with Compose Desktop UI — built with Claude Code",
+      "id": "chip-writer",
+      "name": "ChipWriter",
+      "description": "NFC chip writer with Compose Desktop UI",
       "path": "..\\ChipWriter",
       "command": "gradlew.bat :ui:run",
       "color": "#2D3748",
@@ -24,15 +24,15 @@
       "url": "https://github.com/tosjo/ChipWriter"
     },
     {
-      "id": "chip-writer-codex",
-      "name": "ChipWriter (Codex)",
-      "description": "NFC chip writer with Compose Desktop UI — built with Codex",
-      "path": "..\\..\\Codex\\ChipWriter",
-      "command": "gradlew.bat :host:ui:run",
-      "color": "#2D3748",
+      "id": "chip-applet-writer",
+      "name": "ChipAppletWriter",
+      "description": "eMRTD applet writer — Swing GUI for writing to JavaCard via PC/SC or simulator",
+      "path": "..\\ChipAppletWriter",
+      "command": "gradlew.bat runWriter",
+      "color": "#4A1D6A",
       "group": "Smart Card",
-      "tags": ["kotlin", "compose", "nfc"],
-      "url": "https://github.com/tosjo/ChipWriter"
+      "tags": ["java", "swing", "javacard"],
+      "url": "https://github.com/tosjo/ChipAppletWriter"
     },
     {
       "id": "ml-visualiser",
