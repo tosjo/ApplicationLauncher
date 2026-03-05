@@ -2,17 +2,6 @@
   "version": "1.0",
   "apps": [
     {
-      "id": "chip-reader",
-      "name": "ChipReader",
-      "description": "NFC chip reader with Compose Desktop UI",
-      "path": "..\\ChipReader",
-      "command": "gradlew.bat :ui:run",
-      "color": "#1A365D",
-      "group": "Smart Card",
-      "tags": ["kotlin", "compose", "nfc"],
-      "url": "https://github.com/tosjo/ChipReader"
-    },
-    {
       "id": "chip-writer",
       "name": "ChipWriter",
       "description": "NFC chip writer with Compose Desktop UI",
@@ -24,9 +13,20 @@
       "url": "https://github.com/tosjo/ChipWriter"
     },
     {
+      "id": "chip-reader",
+      "name": "ChipReader",
+      "description": "NFC chip reader with Compose Desktop UI",
+      "path": "..\\ChipReader",
+      "command": "gradlew.bat :ui:run",
+      "color": "#1A365D",
+      "group": "Smart Card",
+      "tags": ["kotlin", "compose", "nfc"],
+      "url": "https://github.com/tosjo/ChipReader"
+    },
+    {
       "id": "chip-applet-writer",
-      "name": "ChipAppletWriter",
-      "description": "eMRTD applet writer — Swing GUI for writing to JavaCard via PC/SC or simulator",
+      "name": "ChipAppletWriter (legacy)",
+      "description": "Legacy eMRTD applet writer — now integrated into ChipWriter. Swing GUI for writing to JavaCard via PC/SC or simulator",
       "path": "..\\ChipAppletWriter",
       "command": "gradlew.bat runWriter",
       "color": "#4A1D6A",
