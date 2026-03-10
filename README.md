@@ -91,6 +91,31 @@ See [docs/CONFIGURATION.md](docs/CONFIGURATION.md) for detailed guide.
 - **Hot reload** — re-read `apps.json` without restarting the launcher
 - **Graceful shutdown** — all child processes are cleaned up when the launcher exits
 
+## Troubleshooting
+
+### Gradle stuck at "0% configuring"
+
+Gradle builds (this launcher and managed apps like ChipReader, ChipWriter, CVCReader) can hang at configuration if stale daemon processes or lock files accumulate.
+
+**Fix:**
+
+1. Stop all Gradle daemons:
+   ```bash
+   .\gradlew.bat --stop
+   ```
+
+2. If that doesn't help, remove the cache lock file:
+   ```bash
+   del %USERPROFILE%\.gradle\caches\journal-1\journal-1.lock
+   ```
+
+3. Retry your build. Use `--no-daemon` to rule out daemon issues:
+   ```bash
+   .\gradlew.bat run --no-daemon
+   ```
+
+**Why it happens:** Each killed or timed-out Gradle build can leave a stopped daemon behind. These pile up and eventually block new builds from acquiring the cache lock.
+
 ## Tech Stack
 
 - Kotlin 2.1.10
