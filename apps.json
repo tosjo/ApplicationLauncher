@@ -59,6 +59,22 @@
       "group": "Certificate",
       "tags": ["kotlin", "compose"],
       "url": "https://github.com/tosjo/CVCReader"
+    },
+    {
+      "id": "signumca",
+      "name": "SignumCA",
+      "description": "Certificate Authority — HSM simulator + WildFly + React UI (dev stack)",
+      "path": "..\\SignumCA",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\start-dev.ps1",
+      "color": "#7B341E",
+      "group": "Certificate",
+      "tags": ["java", "wildfly", "react", "pki"],
+      "url": "https://github.com/tosjo/SignumCA",
+      "ports": [
+        {"port": 5180, "label": "UI"},
+        {"port": 8080, "label": "API"},
+        {"port": 9990, "label": "WildFly"}
+      ]
     }
   ]
 }
