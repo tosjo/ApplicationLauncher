@@ -13,6 +13,8 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 | CVCReader | Kotlin/Compose | `gradlew.bat run` | [tosjo/CVCReader](https://github.com/tosjo/CVCReader) |
 | SignumCA | WildFly + React (full stack) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start-dev.ps1` | [tosjo/SignumCA](https://github.com/tosjo/SignumCA) |
 
+Each managed app must be cloned as a **sibling directory** of this repo and brings its own runtime requirements (JDKs, Python venvs, Node, databases). In particular, **SignumCA needs one-time machine provisioning** (WildFly 36, PostgreSQL 17, Utimaco simulator) before its card works on a fresh machine — see [SignumCA's machine setup guide](https://github.com/tosjo/SignumCA/blob/main/docs/operations/machine-setup.md).
+
 ## Requirements
 
 - JDK 17+
