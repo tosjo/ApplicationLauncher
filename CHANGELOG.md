@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SignumCA dev stack as a managed app — one card starts/stops the HSM simulator, WildFly 36, and the Vite UI via SignumCA's `scripts/start-dev.ps1` orchestration script
 - Design spec and implementation plan for multi-component app integration in `docs/superpowers/`
 
+### Fixed
+
+- Tag and port badges now wrap onto multiple lines instead of clipping at the card edge when an app has many chips (e.g. SignumCA's 4 tags + 3 ports)
+
 ## [0.3.0] - 2026-02-06
 
 ### Added

@@ -30,6 +30,7 @@ import java.awt.Desktop
 import java.io.File
 import java.net.URI
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AppCard(
     config: AppConfig,
@@ -130,12 +131,12 @@ fun AppCard(
                 )
             }
 
-            // Tags + Ports row
+            // Tags + Ports row (wraps when there are too many chips for one line)
             if (config.tags.isNotEmpty() || config.ports.isNotEmpty()) {
                 Spacer(Modifier.height(10.dp))
-                Row(
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     config.tags.forEach { tag ->
                         Surface(
