@@ -56,7 +56,10 @@ fun AppCard(
     val accentColor = parseHexColor(config.color) ?: MaterialTheme.colorScheme.primaryContainer
 
     Card(
-        modifier = modifier.fillMaxWidth().height(220.dp),
+        // Min-intrinsic height gives the column a bounded height (so the weight
+        // spacer still pins the button to the bottom) while letting crowded
+        // cards grow past the 220dp baseline instead of clipping.
+        modifier = modifier.fillMaxWidth().heightIn(min = 220.dp).height(IntrinsicSize.Min),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
