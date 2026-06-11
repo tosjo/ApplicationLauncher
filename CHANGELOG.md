@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Tag and port badges now wrap onto multiple lines instead of clipping at the card edge when an app has many chips (e.g. SignumCA's 4 tags + 3 ports)
+- Cards grow beyond the 220dp baseline when their content needs it, instead of clipping the start button
 
 ## [0.3.0] - 2026-02-06
 
