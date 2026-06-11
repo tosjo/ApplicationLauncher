@@ -11,7 +11,7 @@ A Compose Desktop launcher for managing multiple interconnected desktop applicat
 | ChipWriter (Codex) | Kotlin/Compose | `gradlew.bat :host:ui:run` | [tosjo/ChipWriter](https://github.com/tosjo/ChipWriter) |
 | MLVisualiser | FastAPI + React | `.venv\Scripts\python.exe scripts\start_fullstack.py` | [tosjo/MLInspector](https://github.com/tosjo/MLInspector) |
 | CVCReader | Kotlin/Compose | `gradlew.bat run` | [tosjo/CVCReader](https://github.com/tosjo/CVCReader) |
-| SignumCA | WildFly + React (full stack) | `powershell -File scripts\start-dev.ps1` | [tosjo/SignumCA](https://github.com/tosjo/SignumCA) |
+| SignumCA | WildFly + React (full stack) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\start-dev.ps1` | [tosjo/SignumCA](https://github.com/tosjo/SignumCA) |
 
 ## Requirements
 
